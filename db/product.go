@@ -12,7 +12,7 @@ import (
 type Product struct {
 	tableName struct{} `sql:"product_items"`
 	ID        int      `sql:"id,pk"`
-	Name      string   `sql:"name,unique"`
+	Name      string   `sql:"name"`
 	Desc      string   `sql:"desc"`
 	Image     string   `sql:"image"`
 	Price     float64  `sql:"price,type:real"`

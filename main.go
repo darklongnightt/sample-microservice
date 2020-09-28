@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/darklongnightt/microservice/config"
+
 	"github.com/darklongnightt/microservice/productpage"
 
 	"github.com/darklongnightt/microservice/db"
@@ -22,8 +24,14 @@ func main() {
 	logger := log.New(os.Stdout, "microservice: ", log.LstdFlags|log.Lshortfile)
 	fmt.Printf("Server started on localhost%v\n", port)
 
+	// Get app configs
+	config, err := config.GetAppConfig()
+	if err != nil {
+		logger.Fatalf("Server failed to start: %v", err)
+	}
+
 	// Init the db
-	db, err := db.Init()
+	db, err := db.Init(config)
 	if err != nil {
 		logger.Fatalf("Server failed to start: %v", err)
 	}

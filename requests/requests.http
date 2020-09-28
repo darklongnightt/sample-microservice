@@ -19,17 +19,17 @@ POST https://localhost:8080/product
 content-type: application/json;
 
 {
-    "name":     "3nd product",
-	"desc":     "prod desc",
-	"imgae":    "someurl.com",
+    "name":     "microservice",
+	"desc":     "a sample go microservice working with postgresql and docker",
+	"image":    "someurl.com",
 	"price":    4.50,
 	"isActive": true,
 	"features": {
-		"name": "feature name",
-		"desc": "feature desc"
+		"name": "docker",
+		"desc": "containerize this service"
 	}
 }
 
 ###
 
-GET https://localhost:8080/product?id=1
+GET https://localhost:8080/product?id=2

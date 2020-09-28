@@ -28,6 +28,9 @@ github.com/jinzhu/inflection
 golang.org/x/crypto/pbkdf2
 # gopkg.in/check.v1 v1.0.0-20200902074654-038fdea0a05b
 ## explicit
+# gopkg.in/yaml.v2 v2.3.0
+## explicit
+gopkg.in/yaml.v2
 # mellium.im/sasl v0.2.1
 ## explicit
 mellium.im/sasl

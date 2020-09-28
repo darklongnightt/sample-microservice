@@ -4,21 +4,23 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/darklongnightt/microservice/config"
+
 	"github.com/go-pg/pg"
 )
 
 // Init ...
-func Init() (*pg.DB, error) {
+func Init(config *config.Config) (*pg.DB, error) {
 	var db *pg.DB
 	connectionTries := 5
 
 	for connectionTries > 0 {
 		// Setup db connection
 		db = pg.Connect(&pg.Options{
-			Addr:     "db:5432",
-			User:     "postgres",
-			Password: "password",
-			Database: "sample",
+			Addr:     config.DB.Host,
+			User:     config.DB.User,
+			Password: config.DB.Password,
+			Database: config.DB.Database,
 		})
 
 		// Check if connection is ok
@@ -36,7 +38,7 @@ func Init() (*pg.DB, error) {
 	}
 
 	// Init all tables
-	fmt.Println("Connection to db successful")
+	fmt.Printf("Connection to db on %v successful\n", config.DB.Host)
 	if err := CreateAllTables(db); err != nil {
 		return nil, fmt.Errorf("failed to init tables\nreason: %v", err)
 	}

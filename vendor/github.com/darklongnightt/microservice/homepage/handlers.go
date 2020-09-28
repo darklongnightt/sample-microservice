@@ -15,6 +15,27 @@ type Handlers struct {
 	logger *log.Logger
 }
 
+// NewHandlers defines constructor for homepage handler
+func NewHandlers(logger *log.Logger) *Handlers {
+	return &Handlers{logger: logger}
+}
+
+// SetupRoutes routes handler functions to path related to homepage
+func (h *Handlers) SetupRoutes(mux *http.ServeMux) {
+	mux.HandleFunc("/", h.Logger(h.Home))
+	mux.HandleFunc("/profile", h.Logger(h.Profile))
+	mux.HandleFunc("/upload", h.Logger(h.UploadFile))
+}
+
+// Logger middleware that calculates processed time
+func (h *Handlers) Logger(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		startTime := time.Now()
+		next(w, r)
+		h.logger.Printf("request processed in %vs\n", time.Now().Sub(startTime))
+	}
+}
+
 // Home handler function
 func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
 	message := "Hello world"
@@ -64,25 +85,4 @@ func (h *Handlers) UploadFile(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-}
-
-// Logger middleware that calculates processed time
-func (h *Handlers) Logger(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		startTime := time.Now()
-		next(w, r)
-		h.logger.Printf("request processed in %vs\n", time.Now().Sub(startTime))
-	}
-}
-
-// SetupRoutes routes handler functions to path related to homepage
-func (h *Handlers) SetupRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("/", h.Logger(h.Home))
-	mux.HandleFunc("/profile", h.Logger(h.Profile))
-	mux.HandleFunc("/upload", h.Logger(h.UploadFile))
-}
-
-// NewHandlers defines constructor for homepage handler
-func NewHandlers(logger *log.Logger) *Handlers {
-	return &Handlers{logger: logger}
 }

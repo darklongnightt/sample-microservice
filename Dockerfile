@@ -15,6 +15,7 @@ USER xavier
 # Create work directory and download dependencies before mirroring
 WORKDIR /go/microservice
 COPY . .
+COPY ./config/dockerConfig.yml ./config/config.yml
 RUN go mod download
 
 # Compile the binary, we don't want to run the cgo resolver
