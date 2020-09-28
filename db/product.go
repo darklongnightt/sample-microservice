@@ -35,6 +35,5 @@ func CreateProductTable(db *pg.DB) error {
 		return fmt.Errorf("error while creating table for Product\nreason: %v", err)
 	}
 
-	fmt.Println("Table for Product created successfully")
 	return nil
 }

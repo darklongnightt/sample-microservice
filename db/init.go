@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/darklongnightt/microservice/config"
@@ -10,7 +11,7 @@ import (
 )
 
 // Init ...
-func Init(config *config.Config) (*pg.DB, error) {
+func Init(config *config.Config, l *log.Logger) (*pg.DB, error) {
 	var db *pg.DB
 	connectionTries := 5
 
@@ -26,7 +27,7 @@ func Init(config *config.Config) (*pg.DB, error) {
 		// Check if connection is ok
 		if _, err := db.Exec("SELECT 1"); err != nil {
 			connectionTries--
-			fmt.Printf("failed to connect to db, tries left: %v\n", connectionTries)
+			l.Printf("failed to connect to db, tries left: %v\n", connectionTries)
 			time.Sleep(5 * time.Second)
 
 			if connectionTries == 0 {
@@ -38,7 +39,7 @@ func Init(config *config.Config) (*pg.DB, error) {
 	}
 
 	// Init all tables
-	fmt.Printf("Connection to db on %v successful\n", config.DB.Host)
+	l.Printf("Connection to db successful on %v\n", config.DB.Host)
 	if err := CreateAllTables(db); err != nil {
 		return nil, fmt.Errorf("failed to init tables\nreason: %v", err)
 	}
