@@ -1,0 +1,35 @@
+GET https://localhost:8080/
+
+###
+
+GET https://localhost:8080/profile
+
+### curl -F somefile=@sample_data.csv https://localhost:8080/upload
+
+# POST https://localhost:8080/upload
+# Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+# ------WebKitFormBoundary7MA4YWxkTrZu0gW
+# Content-Disposition: form-data; name="somefile"; filename="./requests/sample_data.csv"
+# Content-Type: text/csv
+
+###
+
+POST https://localhost:8080/product
+content-type: application/json;
+
+{
+    "name":     "3nd product",
+	"desc":     "prod desc",
+	"imgae":    "someurl.com",
+	"price":    4.50,
+	"isActive": true,
+	"features": {
+		"name": "feature name",
+		"desc": "feature desc"
+	}
+}
+
+###
+
+GET https://localhost:8080/product?id=1
