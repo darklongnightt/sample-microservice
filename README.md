@@ -22,11 +22,11 @@ Folder structures by logical modules for each group of REST endpoints
 Example:
 
 ```
-    /homepage
-        - handlers
-        - middlewares
-        - funcs
-        - models
+/homepage
+    - handlers
+    - middlewares
+    - funcs
+    - models
 ```
 
 2. TLS (HTTPS) Server
