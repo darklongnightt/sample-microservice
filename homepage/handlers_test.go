@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestHandlers_Home(t *testing.T) {
+func TestHome(t *testing.T) {
 	tests := []struct {
 		name           string
 		in             *http.Request

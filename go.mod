@@ -2,13 +2,7 @@ module github.com/darklongnightt/microservice
 
 go 1.15
 
-replace github.com/darklongnightt/microservice/homepage => ./homepage
-
-replace github.com/darklongnightt/microservice/server => ./server
-
 require (
-	github.com/darklongnightt/microservice/homepage v0.0.0-00010101000000-000000000000
-	github.com/darklongnightt/microservice/server v0.0.0-00010101000000-000000000000
 	github.com/go-pg/pg v8.0.7+incompatible
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect

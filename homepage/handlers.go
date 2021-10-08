@@ -1,13 +1,9 @@
 package homepage
 
 import (
-	"encoding/csv"
 	"encoding/json"
-	"fmt"
-	"io"
 	"log"
 	"net/http"
-	"time"
 )
 
 // Handlers with logger as injected dependency
@@ -27,15 +23,6 @@ func (h *Handlers) SetupRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/upload", h.Logger(h.UploadFile))
 }
 
-// Logger middleware that calculates processed time
-func (h *Handlers) Logger(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		startTime := time.Now()
-		next(w, r)
-		h.logger.Printf("request processed in %vs\n", time.Now().Sub(startTime))
-	}
-}
-
 // Home handler function
 func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
 	message := "Hello world"
@@ -46,8 +33,7 @@ func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
 
 // Profile handler function
 func (h *Handlers) Profile(w http.ResponseWriter, r *http.Request) {
-	profile := &Profile{"Xavier", []string{"Calisthenics", "Coding"}}
-
+	profile := h.getProfile()
 	js, err := json.Marshal(profile)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -61,26 +47,15 @@ func (h *Handlers) Profile(w http.ResponseWriter, r *http.Request) {
 
 // UploadFile handles file uploaded
 func (h *Handlers) UploadFile(w http.ResponseWriter, r *http.Request) {
-	file, header, err := r.FormFile("somefile")
+	file, _, err := r.FormFile("somefile")
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	fmt.Println("Header: ", header)
-	reader := csv.NewReader(file)
-	for {
-		record, err := reader.Read()
-		if err == io.EOF {
-			break
-		}
-
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		fmt.Println(record)
+	if err := h.readFile(file); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
